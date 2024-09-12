@@ -423,7 +423,6 @@ property.map(x=>{
     }
     excel_data.push(inObj);
 })
-console.log(excel_data);
 function Form(){
     const [rows,setRows] = useState([{row:1,property: property}]);
     const [types] = useState(type);
@@ -502,12 +501,9 @@ function Form(){
     const deleteCurrentRow = (row_no) =>{ 
         const rows_arr = [...rows];
         const row_index = rows_arr.findIndex(r=>r.row === row_no); 
-        if(row_index >=0){            
-            if(rows_arr[row_index].duration){
-                overallDuration(rows_arr);
-            }
-            rows_arr.splice(row_index,1);
-            console.log('rows_arr',rows_arr);
+        if(row_index >=0){    
+            rows_arr.splice(row_index,1);   
+            overallDuration(rows_arr); 
             setRows(rows_arr)
         }        
     }
@@ -560,6 +556,10 @@ function Form(){
     const generateExcel = () =>{
         if(!issue_name.current.value || issue_name.current.value.length < 5){
             alert("Please enter issue name with minimum 5 letters");
+            return;
+        }
+        if(!rows||rows.length===0){
+            alert("Please add a steps");
             return;
         }
         let missed_fields = 0;
@@ -616,7 +616,9 @@ function Form(){
         }    
     }
     const resetForm = () =>{
-        setRows([{row:1,property: property}])
+        if(window.confirm("do you want to reset?")===true){
+            setRows([{row:1,property: property}])
+        }        
     }
     const updateManualDuration = (e,index)=>{
         const rows_arr = [...rows];
