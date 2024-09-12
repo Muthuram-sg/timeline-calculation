@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState,useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from '@mui/material/Grid';
@@ -16,15 +16,15 @@ const type = [
     },
     {
         id: 2,
-        title: "Basic Function"
-    },
-    {
-        id: 3,
-        title: "API"
+        title: "Logics"
     },
     {
         id: 4,
         title: "Database"
+    },
+    {
+        id: 5,
+        title: "Planning"
     }
 ]
 const level = [
@@ -57,27 +57,19 @@ const property = [
 {"id":13,"title":"breadcrumbs","type": 1},
 {"id":14,"title":"list","type": 1},
 {"id":15,"title":"chart","type": 1},
-{"id":16,"title":"Graphql permission","type": 2},
-{"id":17,"title":"graphql query preparation","type": 2},
-{"id":18,"title":"iteration functions","type": 2},
-{"id":19,"title":"conditional functions","type": 2},
-{"id":20,"title":"React component creation","type": 2},
-{"id":21,"title":"call back functions","type": 2},
-{"id":22,"title":"Routing","type": 2},
-{"id":23,"title":"state creation","type": 2},
-{"id":24,"title":"useeffect","type": 2},
-{"id":25,"title":"custom hooks","type": 2},
-{"id":26,"title":"routing","type": 3},
-{"id":27,"title":"conditional functions","type": 3},
-{"id":28,"title":"iterational function","type": 3},
-{"id":29,"title":"database query preparation","type": 3},
-{"id":30,"title": "Table Creation", "type": 4},
-{"id":31,"title": "Table updation","type": 4},
-{"id":32,"title": "Hasura Permissions","type": 4},
-{"id":33,"title": "DB Triggers or Functions","type": 4}
+{"id":16,"title":"Datepicker","type": 1},
+{"id":17,"title":"Card","type": 1},
+{"id":18,"title":"Front End Logic","type": 2},
+{"id":19,"title":"Back End Logic","type": 2},
+{"id":30,"title":"Table Creation", "type": 4},
+{"id":31,"title":"Table updation","type": 4},
+{"id":33,"title":"DB Triggers or Functions","type": 4},
+{"id":36,"title":"Requirement Discussion", "type":5},
+{"id":37,"title":"Requirment Analyze", "type": 5}
 ];
 
 const Estimations = [
+    //icon
     {        
         property:  1,
         level: 1,
@@ -86,39 +78,409 @@ const Estimations = [
     {        
         property:  1,
         level: 2,
-        value: 15
+        value: 8
     },
     {        
         property:  1,
         level: 3,
-        value: 30
+        value: 10
+    },//label
+    {        
+        property: 2,
+        level: 1,
+        value: 3 //static labels
+    },
+    {        
+        property: 2,
+        level: 2,
+        value: 5 // condition label
+    },
+    {        
+        property: 2,
+        level: 3,
+        value: 10 //dynamic label
+    },//text
+    {        
+        property: 3,
+        level: 1,
+        value: 3 //REF
+    },
+    {        
+        property: 3,
+        level: 2,
+        value: 5 // STATE
+    },
+    {        
+        property: 3,
+        level: 3,
+        value: 10 
+    },//BUTTON
+    {        
+        property: 4,
+        level: 1,
+        value: 5
+    },
+    {        
+        property: 4,
+        level: 2,
+        value: 10
+    },
+    {        
+        property: 4,
+        level: 3,
+        value: 15
+    },//TEXT BOX
+    {        
+        property: 5,
+        level: 1,
+        value: 5
+    },
+    {        
+        property: 5,
+        level: 2,
+        value: 10
+    },
+    {        
+        property: 5,
+        level: 3,
+        value: 15
+    },// Dropdown
+    {        
+        property: 6,
+        level: 1,
+        value: 10
+    },
+    {        
+        property: 6,
+        level: 2,
+        value: 15
+    },
+    {        
+        property: 6,
+        level: 3,
+        value: 20
+    },//checkbox
+    {        
+        property: 7,
+        level: 1,
+        value: 3
+    },
+    {        
+        property: 7,
+        level: 2,
+        value: 5
+    },
+    {        
+        property: 7,
+        level: 3,
+        value: 10
+    },//Radio
+    {        
+        property: 8,
+        level: 1,
+        value: 3
+    },
+    {        
+        property: 8,
+        level: 2,
+        value: 5
+    },
+    {        
+        property: 8,
+        level: 3,
+        value: 10
     }
+    ,//toggle
+    {        
+        property: 9,
+        level: 1,
+        value: 3
+    },
+    {        
+        property: 9,
+        level: 2,
+        value: 5
+    },
+    {        
+        property: 9,
+        level: 3,
+        value: 10
+    },//table
+    {        
+        property: 10,
+        level: 1,
+        value: 10
+    },
+    {        
+        property: 10,
+        level: 2,
+        value: 20
+    },
+    {        
+        property: 10,
+        level: 3,
+        value: 45 // Expandable options
+    },//link
+    {        
+        property: 11,
+        level: 1,
+        value: 3
+    },
+    {        
+        property: 11,
+        level: 2,
+        value: 5
+    },
+    {        
+        property: 11,
+        level: 3,
+        value: 10 
+    },//modal
+    {        
+        property: 12,
+        level: 1,
+        value: 5
+    },
+    {        
+        property: 12,
+        level: 2,
+        value: 15 
+    },
+    {        
+        property: 12,
+        level: 3,
+        value: 20
+    },//breadcrumbs
+    {        
+        property: 13,
+        level: 1,
+        value: 10
+    },
+    {        
+        property: 13,
+        level: 2,
+        value: 15
+    },
+    {        
+        property: 13,
+        level: 3,
+        value: 20
+    },//list
+    {        
+        property: 14,
+        level: 1,
+        value: 10
+    },
+    {        
+        property: 14,
+        level: 2,
+        value: 15
+    },
+    {        
+        property: 14,
+        level: 3,
+        value: 20
+    },//chart
+    {        
+        property: 15,
+        level: 1,
+        value: 15
+    },
+    {        
+        property: 15,
+        level: 2,
+        value: 30
+    },
+    {        
+        property: 15,
+        level: 3,
+        value: 45
+    },//datepicker
+    {        
+        property: 16,
+        level: 1,
+        value: 10
+    },
+    {        
+        property: 16,
+        level: 2,
+        value: 20
+    },
+    {        
+        property: 16,
+        level: 3,
+        value: 30
+    },//card
+    {        
+        property: 17,
+        level: 1,
+        value: 5
+    },
+    {        
+        property: 17,
+        level: 2,
+        value: 10
+    },
+    {        
+        property: 17,
+        level: 3,
+        value: 15
+    },//Front End Logic
+    {        
+        property: 18,
+        level: 1,
+        value: 60 //1 hour
+    },
+    {        
+        property: 18,
+        level: 2,
+        value: 240 //4 hours
+    },
+    {        
+        property: 18,
+        level: 3,
+        value: 480 //8 hours
+    },//Backend Logic
+    {        
+        property: 19,
+        level: 1,
+        value: 60 //1 hour
+    },
+    {        
+        property: 19,
+        level: 2,
+        value: 240 //4hours
+    },
+    {        
+        property: 19,
+        level: 3,
+        value: 480 //8hours
+    },
+    {        
+        property: 30,
+        level: 1,
+        value: 5
+    },
+    {        
+        property: 30,
+        level: 2,
+        value: 10
+    },
+    {        
+        property: 30,
+        level: 3,
+        value: 15
+    },
+    {        
+        property: 31,
+        level: 1,
+        value: 5
+    },
+    {        
+        property: 31,
+        level: 2,
+        value: 10
+    },
+    {        
+        property: 31,
+        level: 3,
+        value: 15
+    },
+    {        
+        property: 33,
+        level: 1,
+        value: 5
+    },
+    {        
+        property: 33,
+        level: 2,
+        value: 10
+    },
+    {        
+        property: 33,
+        level: 3,
+        value: 15
+    },
 ];
-
+let excel_data=[];
+property.map(x=>{
+    const est = Estimations.filter(e=>e.property===x.id);    
+    let inObj={
+        property: x.title
+    }
+    if(est.length>0){        
+        est.map(z=>{
+            if(z.level===1){
+                inObj['Low']=z.value;
+            }
+            if(z.level===2){
+                inObj['Medium']=z.value;
+            }
+            if(z.level==3){
+                inObj['High']=z.value;
+            }
+        })
+    }
+    excel_data.push(inObj);
+})
+console.log(excel_data);
 function Form(){
     const [rows,setRows] = useState([{row:1,property: property}]);
     const [types] = useState(type);
-    const [totalDuration,setTotalDuration]=useState('00:00:00')
+    const [totalDuration,setTotalDuration]=useState('--')
     const issue_name = useRef();
+    
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+          // Custom message in some browsers
+          const message = "Are you sure you want to leave? Changes you made may not be saved.";
+          event.returnValue = message; // Required for some browsers
+          return message; // Required for other browsers
+        };
+    
+        // Add event listener
+        window.addEventListener("beforeunload", handleBeforeUnload);
+    
+        // Cleanup the event listener
+        return () => {
+          window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+      }, []);
+    
     // Execute if any components change in the state of rows to re-calculate the over-all duration
-    const overallDuration = ()=>{
+    const overallDuration = (row_data)=>{
         let totalMinutes = 0;
-        rows.forEach(x=>{
+        row_data.forEach(x=>{
             if(x.duration){
-                totalMinutes += x.duration;
+                totalMinutes += Number(x.duration);
             }
         })
+        console.log('totalMinutes',totalMinutes,isNaN(totalMinutes));
         if (!isNaN(totalMinutes)) {
-            const days = Math.floor(totalMinutes / 1440);
-            const remainingMinutesAfterDays = totalMinutes % 1440;
-            const hours = Math.floor(remainingMinutesAfterDays / 60);
-            const remainingMinutes = remainingMinutesAfterDays % 60;
-            const formatted = `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}`;      
-            setTotalDuration(formatted);
+            // const days = Math.floor(totalMinutes / 1440);
+            // const remainingMinutesAfterDays = totalMinutes % 1440;
+            // const hours = Math.floor(remainingMinutesAfterDays / 60);
+            // const remainingMinutes = remainingMinutesAfterDays % 60;
+            // const formatted = `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}`;      
+            if(totalMinutes < 59){
+                setTotalDuration(totalMinutes+' Mins');    
+            }else if(totalMinutes > 59 ){
+                const remainingMinutesAfterDays = totalMinutes % 1440;
+                const hours = Math.floor(remainingMinutesAfterDays / 60);
+                const remainingMinutes = remainingMinutesAfterDays % 60;
+                if(remainingMinutes>0){
+                    setTotalDuration(hours +' Hours '+remainingMinutes+' Minutes')
+                }else{
+                    setTotalDuration(hours+ ' Hours')
+                }
+                
+            }
+            
         }else{
-            setTotalDuration('00:00:00')
+            setTotalDuration('--')
         }
     }
+    
     function generateRandom4DigitId() {
         return Math.floor(1000 + Math.random() * 9000).toString();
     }
@@ -140,11 +502,12 @@ function Form(){
     const deleteCurrentRow = (row_no) =>{ 
         const rows_arr = [...rows];
         const row_index = rows_arr.findIndex(r=>r.row === row_no); 
-        if(row_index >=0){
-            rows_arr.splice(row_index,1);
+        if(row_index >=0){            
             if(rows_arr[row_index].duration){
-                overallDuration();
+                overallDuration(rows_arr);
             }
+            rows_arr.splice(row_index,1);
+            console.log('rows_arr',rows_arr);
             setRows(rows_arr)
         }        
     }
@@ -161,7 +524,7 @@ function Form(){
         }
         rows_arr[index].level = value;
         rows_arr[index].duration = duration;
-        overallDuration();
+        overallDuration(rows_arr);
         setRows(rows_arr)
     }
 
@@ -171,9 +534,12 @@ function Form(){
         if(value.id && rows_arr[index].level){
             duration = findEstimation(rows_arr[index].level.id,value.id)
         }
+        if([36,37].includes(value.id)){
+            rows_arr[index].level = {id:1,title:'Low'};
+        }
         rows_arr[index].property_val = value;
         rows_arr[index].duration = duration;
-        overallDuration();
+        overallDuration(rows_arr);
         setRows(rows_arr)
     }
 
@@ -184,7 +550,7 @@ function Form(){
         rows_arr[index].property = property_li;              
         rows_arr[index].property_val = null
         rows_arr[index].duration = 0;
-        overallDuration();
+        overallDuration(rows_arr);
         setRows(rows_arr)
     }
     const findEstimation = (level,property) =>{
@@ -206,7 +572,7 @@ function Form(){
                         Type: steps.type.title,
                         Property: steps.property_val.title,
                         Level: steps.level.title,
-                        Duration: steps.duration?steps.duration:0+' Mins'
+                        Duration: steps.duration?Number(steps.duration):0
                     })
                     return true;
                 }else{
@@ -233,6 +599,16 @@ function Form(){
               ];
  
               worksheet.addRows(excelContent);
+
+            // Calculate total duration
+            const totalDuration = excelContent.reduce((total, row) => total + Number(row.Duration), 0);
+            worksheet.addRow({
+                Description: '',
+                Type: '',
+                Property: '',
+                Level: 'Total',
+                Duration: totalDuration
+            });
             workbook.xlsx.writeBuffer()
             .then(buffer => FileSaver.saveAs(new Blob([buffer]), `${issueName}.xlsx`))
             .catch(err => console.log('Error writing excel export', err))
@@ -241,6 +617,12 @@ function Form(){
     }
     const resetForm = () =>{
         setRows([{row:1,property: property}])
+    }
+    const updateManualDuration = (e,index)=>{
+        const rows_arr = [...rows];
+        rows_arr[index].duration = e.target.value;
+        overallDuration(rows_arr);
+        setRows(rows_arr)
     }
     return( 
         <div class="body">
@@ -299,17 +681,28 @@ function Form(){
                                     />
                                 </Grid>
                                 <Grid item xs={1} key={'grid-auto-level-'+row}>
-                                    <Autocomplete
-                                        options={level}
-                                        getOptionLabel={(option)=>option.title}
-                                        id="disable-close-on-select"
-                                        disableCloseOnSelect
-                                        value={row.level?row.level:null}
-                                        onChange={(e,value)=>updateLevel(value,index)}
-                                        renderInput={(params) => (
-                                        <TextField {...params} label="Level" variant="standard" />
-                                        )}
-                                    />
+                                    {
+                                        row.property_val && row.property_val.id && [36,37].includes(row.property_val.id)?(
+                                            <>
+                                                <TextField key={'grid-text-'+row} fullWidth id="standard-basic" label="Manual-duration" variant="standard" value={row.duration?row.duration:''} onChange={(e)=>updateManualDuration(e,index)}/>
+                                            </>
+                                        ):(
+                                            <>
+                                                <Autocomplete
+                                                    options={level}
+                                                    getOptionLabel={(option)=>option.title}
+                                                    id="disable-close-on-select"
+                                                    disableCloseOnSelect
+                                                    value={row.level?row.level:null}
+                                                    onChange={(e,value)=>updateLevel(value,index)}
+                                                    renderInput={(params) => (
+                                                    <TextField {...params} label="Level" variant="standard" />
+                                                    )}
+                                                />
+                                            </>
+                                        )
+                                    }
+                                    
                                 </Grid>   
                                 <Grid item xs={1} key={'grid-auto-level-'+row}>
                                     <p class="point-duration">{row.duration?row.duration:0} Mins</p>
