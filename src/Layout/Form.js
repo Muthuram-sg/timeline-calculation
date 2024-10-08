@@ -464,9 +464,9 @@ function Form(){
             if(totalMinutes < 59){
                 setTotalDuration(totalMinutes+' Mins');    
             }else if(totalMinutes > 59 ){
-                const remainingMinutesAfterDays = totalMinutes % 1440;
-                const hours = Math.floor(remainingMinutesAfterDays / 60);
-                const remainingMinutes = remainingMinutesAfterDays % 60;
+                const hours = Math.floor(totalMinutes / 60);
+                const remainingMinutes = totalMinutes % 60;
+                console.log('remaining',hours,remainingMinutes)
                 if(remainingMinutes>0){
                     setTotalDuration(hours +' Hours '+remainingMinutes+' Minutes')
                 }else{
@@ -647,7 +647,7 @@ function Form(){
                     </Grid>
                 </Grid>
                 <div class="fields">
-                <Grid container spacing={2}>
+                <Grid container spacing={2} style={{marginBottom: 45}}>
                     <>
                     {
                         rows && rows.length > 0 ? rows.map((row,index)=>{
